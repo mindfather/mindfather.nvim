@@ -1,0 +1,27 @@
+-- langmap-based layout remap (preferred)
+-- Operates below Vim's keymap layer: applies to all normal/visual/operator-pending
+-- key lookups before noremap processing. Buffer-local plugin maps resolve correctly
+-- without manual per-plugin overrides. Insert and command-line modes unaffected.
+vim.opt.langmap = 'nj,ek,il,kn,ui,lu,fe,tf,jt,NJ,EK,IL,KN,UI,LU,FE,TF,JT'
+
+-- keymap-based layout remap (previous solution — commented out)
+-- Used '' mode which covers select mode and required manual Colemak overrides
+-- in every plugin spec (neo-tree, completion, etc.) due to load-order conflicts.
+-- vim.keymap.set('', 'n', 'j', { noremap = true })
+-- vim.keymap.set('', 'N', 'J', { noremap = true })
+-- vim.keymap.set('', 'e', 'k', { noremap = true })
+-- vim.keymap.set('', 'E', 'K', { noremap = true })
+-- vim.keymap.set('', 'i', 'l', { noremap = true })
+-- vim.keymap.set('', 'I', 'L', { noremap = true })
+-- vim.keymap.set('', 'k', 'n', { noremap = true })
+-- vim.keymap.set('', 'K', 'N', { noremap = true })
+-- vim.keymap.set('', 'u', 'i', { noremap = true })
+-- vim.keymap.set('', 'U', 'I', { noremap = true })
+-- vim.keymap.set('', 'l', 'u', { noremap = true })
+-- vim.keymap.set('', 'L', 'U', { noremap = true })
+-- vim.keymap.set('', 'f', 'e', { noremap = true })
+-- vim.keymap.set('', 'F', 'E', { noremap = true })
+-- vim.keymap.set('', 't', 'f', { noremap = true })
+-- vim.keymap.set('', 'T', 'F', { noremap = true })
+-- vim.keymap.set('', 'j', 't', { noremap = true })
+-- vim.keymap.set('', 'J', 'T', { noremap = true })
