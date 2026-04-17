@@ -1,6 +1,7 @@
 -- Neo-tree is a Neovim plugin to browse the file system
 -- https://github.com/nvim-neo-tree/neo-tree.nvim
 
+---@type LazySpec
 return {
   'nvim-neo-tree/neo-tree.nvim',
   version = '*',
@@ -14,7 +15,8 @@ return {
   keys = {
     { '\\', ':Neotree reveal<CR>', { desc = 'NeoTree reveal' } },
   },
-  --@type neotree.Config
+  ---@module 'neo-tree'
+  ---@type neotree.Config
   opts = {
     close_if_last_window = true,
     window = {

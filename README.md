@@ -1,6 +1,6 @@
 # mindfather.nvim
 
-Personal Neovim configuration. Targets Neovide on macOS. Built on a Colemak-DHm
+Personal Neovim configuration. Targets Neovide on macOS. Built on a Colemak
 keyboard layout. Plugin management via `lazy.nvim`. LSP configured natively
 without `lspconfig`.
 
@@ -13,11 +13,10 @@ modules in this order:
 
 1. `keymaps` — global bindings
 2. `autocommands` — yank flash, Neovide tab-cwd
-3. `lazy-bootstrap` — clones lazy.nvim if absent
-4. `lazy-plugins` — registers all plugin specs
-5. `options` — editor settings, colorscheme activation (Neovide only)
-6. `lsp` — native LSP setup
-7. `colemak` — full layout remap
+3. `lazy-plugins` — bootstraps lazy.nvim and registers plugin specs
+4. `options` — editor settings, colorscheme activation (Neovide only)
+5. `lsp` — native LSP setup
+6. `colemak` — layout remap
 
 ---
 
@@ -29,14 +28,20 @@ nvim/
 │   └── monokai-pro-ristretto.lua   colorscheme entry point (Neovide)
 ├── lua/
 │   ├── autocommands.lua            yank highlight, Neovide tab-cwd
-│   ├── colemak.lua                 Colemak-DHm remap for all modes
+│   ├── colemak.lua                 Colemak remap (normal/visual/op/select)
 │   ├── keymaps.lua                 global bindings, window management
-│   ├── lazy-bootstrap.lua          lazy.nvim auto-install
-│   ├── lazy-plugins.lua            plugin registry
-│   ├── lsp.lua                     native LSP config (no lspconfig)
+│   ├── lazy-plugins.lua            plugin registry (bootstraps lazy.nvim)
+│   ├── lsp.lua                     diagnostics, capabilities, LspAttach, server loop
 │   ├── options.lua                 editor options
 │   ├── colorscheme/
 │   │   └── monokai-pro.lua         ~130 highlight group definitions
+│   ├── lsp/
+│   │   └── servers/
+│   │       ├── ts_ls.lua
+│   │       ├── lua_ls.lua
+│   │       ├── sourcekit_lsp.lua
+│   │       ├── svelte.lua
+│   │       └── rust_analyzer.lua
 │   └── plugins/
 │       ├── autopairs.lua
 │       ├── comment.lua
@@ -85,23 +90,41 @@ nvim/
 
 ## LSP Servers
 
-Configured in `lua/lsp.lua` using `vim.lsp.config` + `vim.lsp.enable` directly.
+Configured via `vim.lsp.config` + `vim.lsp.enable`. Each server lives in its
+own file under `lua/lsp/servers/`; `lua/lsp.lua` loads them in a single loop.
 
 | Server | Languages | Notable |
 |---|---|---|
-| `ts_ls` | JS, TS, JSX, TSX | Custom rename handler, source action command, source definition command |
+| `ts_ls` | JS, TS, JSX, TSX | Custom rename handler, source action command, source definition command, deno-aware root |
 | `lua_ls` | Lua | LuaJIT runtime, `vim` global, code lens + inlay hints |
+| `sourcekit_lsp` | Swift | Package.swift root, watched-files support |
 | `svelte` | Svelte | JS/TS reload workaround on save, `LspMigrateToSvelte5` command |
 | `rust_analyzer` | Rust | Cargo workspace root, clippy check, autoformat disabled |
+
+### LSP Keymaps (set by `LspAttach`)
+
+| LHS | Action |
+|---|---|
+| `grd` | Go to definition |
+| `gD` | Go to declaration |
+| `gi` | Go to implementation |
+| `grr` | References |
+| `gy` | Type definition |
+| `E` | Hover (Colemak — replaces `K`) |
+| `<C-s>` (insert) | Signature help |
+| `<leader>rn` | Rename symbol |
+| `<leader>ca` | Code action |
 
 ---
 
 ## Keyboard Layout
 
-`lua/colemak.lua` remaps the entire Colemak-DHm layout. Key substitutions:
+`lua/colemak.lua` remaps Colemak in normal, visual, operator-pending, and
+select modes via `vim.keymap.set` in `''` mode. Insert and command-line
+modes are intentionally untouched.
 
 ```
-QWERTY → Colemak-DHm
+physical key → executes Vim action
 n → j    (down)
 e → k    (up)
 i → l    (right)
@@ -113,7 +136,9 @@ t → f    (find char)
 j → t    (to char)
 ```
 
-All remaps apply across normal, visual, and operator-pending modes.
+Uppercase variants follow the same pattern. Author custom keymaps using
+the Colemak label on the LHS — multi-key sequences (`<leader>wn`, `gd`, …)
+match before the single-key swaps fire.
 
 ---
 

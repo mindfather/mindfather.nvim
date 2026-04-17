@@ -11,8 +11,8 @@ return {
   dependencies = {
     {
       'igorlfs/nvim-dap-view',
-      --@module 'dap-view'
-      --@type dapview.Config
+      ---@module 'dap-view'
+      ---@type dapview.Config
       opts = {}
     },
   },

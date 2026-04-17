@@ -1,3 +1,5 @@
+--- Autocommands: yank highlight + Neovide tab-local CWD on file open.
+
 if vim.g.neovide then
   vim.api.nvim_create_autocmd('BufReadPost', {
     desc = 'Set tab-local CWD to opened file directory in Neovide',

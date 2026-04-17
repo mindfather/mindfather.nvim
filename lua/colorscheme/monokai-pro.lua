@@ -1,6 +1,30 @@
+--- Monokai-Pro highlight definitions. Exposes `apply(palette)` which is called
+--- from a `colors/<variant>.lua` entry point with a concrete palette.
+
+---@class Palette
+---@field bg string       Base background
+---@field dark1 string    Panel / float background (one shade below bg)
+---@field dark2 string    Deepest background (borders, preview panes)
+---@field text string     Primary foreground
+---@field accent1 string  Red / pink  (keywords, statements, errors)
+---@field accent2 string  Orange      (params, warnings)
+---@field accent3 string  Yellow      (strings, titles, search)
+---@field accent4 string  Green       (functions, additions)
+---@field accent5 string  Cyan        (types, namespaces, directories)
+---@field accent6 string  Purple      (constants, booleans, numbers)
+---@field dimmed1 string  Muted foreground
+---@field dimmed2 string  More muted
+---@field dimmed3 string  Comments, blame
+---@field dimmed4 string  Borders, line numbers
+---@field dimmed5 string  Cursor/visual background, indent markers
+
 local M = {}
 
+--- Apply all highlight groups against `palette` to the current Neovim session.
+---@param p Palette
 function M.apply(p)
+  ---@param group string
+  ---@param opts vim.api.keyset.highlight
   local hi = function(group, opts)
     vim.api.nvim_set_hl(0, group, opts)
   end
