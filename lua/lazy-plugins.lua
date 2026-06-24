@@ -28,6 +28,7 @@ require('lazy').setup({
   require 'plugins.indent_line',
   require 'plugins.neo-tree',
   require 'plugins.comment',
+  require 'plugins.apple-notes',
   -- require 'plugins.debug',
   'evanleck/vim-svelte',
 }, {

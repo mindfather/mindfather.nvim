@@ -22,7 +22,7 @@ return {
 
       local disable_filetypes = { c = true, cpp = true, javascript = true }
       return {
-        timeout_ms = 500,
+        timeout_ms = 2000,
         lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
       }
     end,
